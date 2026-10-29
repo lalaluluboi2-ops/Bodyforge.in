@@ -1,0 +1,10 @@
+name = "bodyforge-in"
+main = "dist/_worker.js"
+compatibility_date = "2026-10-29"
+
+[site]
+bucket = "./dist"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"

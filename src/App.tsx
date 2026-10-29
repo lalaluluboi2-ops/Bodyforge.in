@@ -46,6 +46,10 @@ export const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentTab, setCurrentTab] = useState<string>(() => {
     if (typeof window !== 'undefined') {
+      const cleanPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      if (['dashboard', 'library', 'nutrition', 'wellness', 'seasonal', 'facial', 'progress'].includes(cleanPath)) {
+        return cleanPath;
+      }
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get('tab');
       if (tabParam && ['dashboard', 'library', 'nutrition', 'wellness', 'seasonal', 'facial', 'progress'].includes(tabParam)) {
@@ -61,6 +65,8 @@ export const App: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<WellnessArticle | null>(null);
   const [isViewingPainLibrary, setIsViewingPainLibrary] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
+      const cleanPath = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      if (cleanPath === 'pain-library') return true;
       const params = new URLSearchParams(window.location.search);
       return params.get('view') === 'pain-library';
     }
@@ -257,7 +263,7 @@ export const App: React.FC = () => {
     setIsViewingPainLibrary(false);
     setCurrentTab(tab);
     if (typeof window !== 'undefined' && window.history) {
-      const newUrl = tab === 'dashboard' ? window.location.pathname : `${window.location.pathname}?tab=${tab}`;
+      const newUrl = tab === 'dashboard' ? '/' : `/${tab}`;
       window.history.replaceState(null, '', newUrl);
     }
   };
@@ -267,14 +273,14 @@ export const App: React.FC = () => {
     setSelectedArticle(null);
     setIsViewingPainLibrary(true);
     if (typeof window !== 'undefined' && window.history) {
-      window.history.replaceState(null, '', `${window.location.pathname}?view=pain-library`);
+      window.history.replaceState(null, '', '/pain-library');
     }
   };
 
   const handleClosePainLibrary = () => {
     setIsViewingPainLibrary(false);
     if (typeof window !== 'undefined' && window.history) {
-      const newUrl = currentTab === 'dashboard' ? window.location.pathname : `${window.location.pathname}?tab=${currentTab}`;
+      const newUrl = currentTab === 'dashboard' ? '/' : `/${currentTab}`;
       window.history.replaceState(null, '', newUrl);
     }
   };

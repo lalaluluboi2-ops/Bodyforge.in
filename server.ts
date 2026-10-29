@@ -48,13 +48,14 @@ app.get('/api/health', (_req, res) => {
 
 // Explicit sitemap.xml endpoint for SEO crawlers and Cloudflare Workers proxy
 app.get('/sitemap.xml', (_req, res) => {
-  res.header('Content-Type', 'application/xml');
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('X-Robots-Tag', 'all');
   res.sendFile(path.resolve(__dirname, 'public', 'sitemap.xml'));
 });
 
 // Explicit robots.txt endpoint for search crawlers
 app.get('/robots.txt', (_req, res) => {
-  res.header('Content-Type', 'text/plain');
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.sendFile(path.resolve(__dirname, 'public', 'robots.txt'));
 });
 

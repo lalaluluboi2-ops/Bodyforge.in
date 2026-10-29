@@ -6,6 +6,7 @@ Allow: /
 Allow: /sitemap.xml
 Allow: /assets/
 Disallow: /api/
+Disallow: /progress
 
 # Sitemap index reference
 Sitemap: https://bodyforge-in.lalaluluboi2.workers.dev/sitemap.xml
