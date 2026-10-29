@@ -16,6 +16,7 @@ import {
   Activity
 } from 'lucide-react';
 import { AdSlot } from '../components/AdSlot';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface WorkoutDetailViewProps {
   workout: Workout;
@@ -38,12 +39,14 @@ export const WorkoutDetailView: React.FC<WorkoutDetailViewProps> = ({
     <div className="min-h-screen bg-charcoal-950 pb-36 text-gray-100 animate-in fade-in duration-200">
       {/* Top Banner Navigation */}
       <div className="relative p-4 md:p-6 bg-gradient-to-b from-charcoal-850 to-charcoal-950 border-b border-charcoal-800">
-        <button
+        <motion.button
+          whileHover={{ x: -3 }}
+          whileTap={{ scale: 0.96 }}
           onClick={onBack}
-          className="p-2 rounded-xl bg-charcoal-900/80 border border-charcoal-700 text-gray-300 hover:text-white flex items-center gap-2 mb-4 text-xs transition-colors"
+          className="p-2 rounded-xl bg-charcoal-900/80 border border-charcoal-700 text-gray-300 hover:text-white flex items-center gap-2 mb-4 text-xs transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Library
-        </button>
+        </motion.button>
 
         <span className="text-[10px] uppercase font-mono tracking-widest text-forge-lime font-bold">
           {workout.category}
@@ -80,7 +83,17 @@ export const WorkoutDetailView: React.FC<WorkoutDetailViewProps> = ({
             </p>
             <span className="text-[10px] text-gray-400 font-mono">Interactive Vector Engine</span>
           </div>
-          <MotionDemoPlayer exercise={activePreviewExercise} showDetails={true} />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePreviewExercise.id}
+              initial={{ opacity: 0, scale: 0.985, y: 6 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.985, y: -6 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <MotionDemoPlayer exercise={activePreviewExercise} showDetails={true} />
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Workout Safety, Precautions & Recovery Advice */}
@@ -143,23 +156,25 @@ export const WorkoutDetailView: React.FC<WorkoutDetailViewProps> = ({
             {workout.exercises.map((ex, idx) => {
               const isSelected = activePreviewExercise.id === ex.id;
               return (
-                <div 
+                <motion.div 
                   key={ex.id}
+                  whileHover={{ scale: 1.012, x: 3 }}
+                  whileTap={{ scale: 0.99 }}
                   onClick={() => setActivePreviewExercise(ex)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
+                  className={`p-4 rounded-2xl border transition-colors cursor-pointer flex items-start gap-4 ${
                     isSelected 
-                      ? 'bg-charcoal-850 border-forge-lime shadow-md' 
+                      ? 'bg-charcoal-850 border-forge-lime shadow-lg shadow-forge-lime/5' 
                       : 'bg-charcoal-900 border-charcoal-800 hover:border-gray-700'
                   }`}
                 >
-                  <div className={`w-7 h-7 rounded-lg border flex items-center justify-center text-xs font-mono font-bold shrink-0 ${
-                    isSelected ? 'bg-forge-lime text-black border-forge-lime' : 'bg-charcoal-800 border-charcoal-700 text-forge-lime'
+                  <div className={`w-7 h-7 rounded-lg border flex items-center justify-center text-xs font-mono font-bold shrink-0 transition-colors ${
+                    isSelected ? 'bg-forge-lime text-black border-forge-lime shadow-sm' : 'bg-charcoal-800 border-charcoal-700 text-forge-lime'
                   }`}>
                     {idx + 1}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline justify-between gap-2">
-                      <h4 className={`text-sm font-bold ${isSelected ? 'text-forge-lime' : 'text-white'}`}>
+                      <h4 className={`text-sm font-bold transition-colors ${isSelected ? 'text-forge-lime' : 'text-white'}`}>
                         {ex.name}
                       </h4>
                       <span className="text-xs font-mono font-semibold text-forge-lime shrink-0">
@@ -183,7 +198,7 @@ export const WorkoutDetailView: React.FC<WorkoutDetailViewProps> = ({
                       <span className="text-forge-lime">Focus:</span> {ex.formCues[0]}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -202,12 +217,14 @@ export const WorkoutDetailView: React.FC<WorkoutDetailViewProps> = ({
 
         {/* Fixed Action Button for Mobile & Desktop */}
         <div className="fixed bottom-0 inset-x-0 p-4 bg-charcoal-950/95 backdrop-blur-md border-t border-charcoal-800 flex justify-center z-30">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => onStart(workout)}
-            className="w-full max-w-md py-4 rounded-xl bg-forge-lime hover:bg-forge-lime-hover text-black font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-forge-glow transition-all"
+            className="w-full max-w-md py-4 rounded-xl bg-forge-lime hover:bg-forge-lime-hover text-black font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-forge-glow transition-all cursor-pointer"
           >
             <Play className="w-5 h-5 fill-black" /> Start Live Workout Session
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

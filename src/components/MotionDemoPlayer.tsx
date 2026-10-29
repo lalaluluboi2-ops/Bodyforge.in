@@ -10,10 +10,13 @@ import {
   ShieldCheck, 
   Activity, 
   Eye, 
-  Zap,
-  Gauge,
-  Box
+  Zap, 
+  Gauge, 
+  Box,
+  Compass,
+  Crosshair
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { audioService } from '../services/audioService';
 
 interface MotionDemoPlayerProps {
@@ -428,6 +431,12 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <rect x={benchX} y="130" width="70" height="85" rx="8" fill="#1E293B" stroke="#334155" strokeWidth="2.5" />
                   <rect x={benchX - 5} y="125" width="80" height="12" rx="4" fill="#334155" />
 
+                  {/* FAR ARM (Bench Gripped behind Torso) */}
+                  <line x1="225" y1={shoulderY - 2} x2={elbowX - 10} y2={elbowY - 2} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={elbowX - 10} cy={elbowY - 2} r="5" fill="#0284C7" />
+                  <line x1={elbowX - 10} y1={elbowY - 2} x2={benchX - 6} y2="125" stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={benchX - 6} cy="125" r="4" fill="#0284C7" />
+
                   {/* FAR LEG */}
                   <line x1="220" y1={hipY} x2={kneeX - 10} y2={kneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={kneeX - 10} cy={kneeY} r="5" fill="#0284C7" />
@@ -501,10 +510,16 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   {/* 3D HEAD */}
                   <circle cx="200" cy={headY} r="14" fill="url(#char3dHead)" />
 
-                  {/* ARMS AT SIDES / HIPS */}
-                  <line x1="200" y1={chestY + 10} x2="185" y2={chestY + 35} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
-                  <line x1="200" y1={chestY + 10} x2="215" y2={chestY + 35} stroke={nearLimbStroke} strokeWidth="8" strokeLinecap="round" />
-                  <circle cx="215" cy={chestY + 35} r="4" fill="#D4FF00" />
+                  {/* ARMS BALANCED AT SIDES / HIPS (Far & Near articulated) */}
+                  <line x1="200" y1={chestY + 6} x2="182" y2={chestY + 24} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx="182" cy={chestY + 24} r="4" fill="#0284C7" />
+                  <line x1="182" y1={chestY + 24} x2="194" y2={chestY + 42} stroke={farLimbStroke} strokeWidth="6" strokeLinecap="round" />
+                  <circle cx="194" cy={chestY + 42} r="3" fill="#0284C7" />
+
+                  <line x1="200" y1={chestY + 6} x2="224" y2={chestY + 24} stroke={nearLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="224" cy={chestY + 24} r="5" fill="#D4FF00" />
+                  <line x1="224" y1={chestY + 24} x2="210" y2={chestY + 42} stroke={nearLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx="210" cy={chestY + 42} r="4" fill="#D4FF00" />
 
                   {/* FRONT LEG (Vertical shin 90°) */}
                   <line x1="200" y1={hipY} x2={frontKneeX} y2={frontKneeY} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
@@ -543,12 +558,23 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={210} cy={210} rx={110} ry={8} fill="url(#char3dFloorShadow)" />
 
-                  {/* Bent Knees Grounded */}
+                  {/* FAR BENT LEG */}
+                  <line x1={hipX - 10} y1={hipY} x2={kneeX - 10} y2={kneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={kneeX - 10} cy={kneeY} r="5" fill="#0284C7" />
+                  <line x1={kneeX - 10} y1={kneeY} x2={footX - 10} y2={footY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={footX - 10} cy={footY} r="5" fill="#0284C7" />
+
+                  {/* NEAR BENT LEG */}
                   <circle cx={hipX} cy={hipY} r="9" fill="#0284C7" />
-                  <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke={nearLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke={nearLimbStroke} strokeWidth="12" strokeLinecap="round" />
                   <circle cx={kneeX} cy={kneeY} r="7" fill="#D4FF00" />
                   <line x1={kneeX} y1={kneeY} x2={footX} y2={footY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={footX} cy={footY} r="7" fill="#D4FF00" />
+
+                  {/* FAR ARM CRADLING HEAD (Behind cranium) */}
+                  <line x1={chestX - 6} y1={chestY - 4} x2={headX - 16} y2={headY + 8} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={headX - 16} cy={headY + 8} r="4" fill="#0284C7" />
+                  <line x1={headX - 16} y1={headY + 8} x2={headX - 6} y2={headY - 4} stroke={farLimbStroke} strokeWidth="6" strokeLinecap="round" />
 
                   {/* 3D Curving Torso */}
                   <path 
@@ -570,9 +596,11 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   {/* 3D Head */}
                   <circle cx={headX} cy={headY} r="14" fill="url(#char3dHead)" />
 
-                  {/* Hands cradled behind head (No pulling neck) */}
-                  <line x1={chestX} y1={chestY} x2={headX - 12} y2={headY - 6} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
-                  <circle cx={headX - 12} cy={headY - 6} r="4" fill="#D4FF00" />
+                  {/* NEAR ARM CRADLING HEAD (Forearm & elbow in front) */}
+                  <line x1={chestX} y1={chestY} x2={headX - 12} y2={headY + 12} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={headX - 12} cy={headY + 12} r="5" fill="#D4FF00" />
+                  <line x1={headX - 12} y1={headY + 12} x2={headX} y2={headY - 2} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={headX} cy={headY - 2} r="4" fill="#D4FF00" />
 
                   {isMuscleMode && (
                     <g className="animate-pulse">
@@ -608,11 +636,25 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx="280" cy={hipY} r="9" fill="#1E293B" />
                   <circle cx="305" cy={hipY - 5} r="14" fill="url(#char3dHead)" />
 
-                  {/* Hands flat beside hips for stability */}
-                  <line x1="210" y1="202" x2="255" y2="202" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
-                  <circle cx="210" cy="202" r="4" fill="#D4FF00" />
+                  {/* FAR ARM (Floor Support connected to Shoulder) */}
+                  <line x1="280" y1={hipY} x2="250" y2="200" stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx="250" cy="200" r="4" fill="#0284C7" />
+                  <line x1="250" y1="200" x2="205" y2="200" stroke={farLimbStroke} strokeWidth="6" strokeLinecap="round" />
+                  <circle cx="205" cy="200" r="4" fill="#0284C7" />
 
-                  {/* 3D LEGS RAISING TOGETHER (Connected Hip -> Knee -> Ankle) */}
+                  {/* NEAR ARM (Floor Support connected to Shoulder) */}
+                  <line x1="280" y1={hipY} x2="245" y2="202" stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="245" cy="202" r="5" fill="#D4FF00" />
+                  <line x1="245" y1="202" x2="200" y2="202" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+                  <circle cx="200" cy="202" r="5" fill="#D4FF00" />
+
+                  {/* FAR LEG */}
+                  <line x1={hipX - 8} y1={hipY} x2={kneeX - 8} y2={kneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={kneeX - 8} cy={kneeY} r="5" fill="#0284C7" />
+                  <line x1={kneeX - 8} y1={kneeY} x2={legEndX - 8} y2={legEndY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={legEndX - 8} cy={legEndY} r="5" fill="#0284C7" />
+
+                  {/* NEAR LEG */}
                   <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke={activeMuscleStroke} strokeWidth="13" strokeLinecap="round" />
                   <circle cx={kneeX} cy={kneeY} r="7" fill="#D4FF00" />
                   <line x1={kneeX} y1={kneeY} x2={legEndX} y2={legEndY} stroke={activeMuscleStroke} strokeWidth="11" strokeLinecap="round" />
@@ -756,6 +798,18 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={220} cy={218} rx={shadowR} ry={8} fill="url(#char3dFloorShadow)" />
 
+                  {/* FAR LEG */}
+                  <line x1={hipX - 10} y1={hipY} x2={kneeX - 8} y2={kneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={kneeX - 8} cy={kneeY} r="5" fill="#0284C7" />
+                  <line x1={kneeX - 8} y1={kneeY} x2={footX - 10} y2={footY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={footX - 10} cy={footY} r="5" fill="#0284C7" />
+
+                  {/* FAR ARM */}
+                  <line x1={chestX - 8} y1={chestY} x2={elbowX - 8} y2={elbowY} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={elbowX - 8} cy={elbowY} r="4" fill="#0284C7" />
+                  <line x1={elbowX - 8} y1={elbowY} x2={armEndX - 8} y2={armEndY} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={armEndX - 8} cy={armEndY} r="4" fill="#0284C7" />
+
                   {/* 3D TORSO */}
                   <line x1={hipX} y1={hipY} x2={chestX} y2={chestY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
                   <line x1={hipX} y1={hipY} x2={chestX} y2={chestY} stroke={isMuscleMode ? '#00F0FF' : '#475569'} strokeWidth="12" strokeLinecap="round" />
@@ -765,13 +819,13 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   {/* 3D HEAD */}
                   <circle cx={chestX + 6} cy={chestY - 18} r="13" fill="url(#char3dHead)" />
 
-                  {/* CONNECTED LEGS */}
+                  {/* NEAR LEG */}
                   <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
                   <circle cx={kneeX} cy={kneeY} r="6" fill="#D4FF00" />
                   <line x1={kneeX} y1={kneeY} x2={footX} y2={footY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={footX} cy={footY} r="6" fill="#D4FF00" />
 
-                  {/* CONNECTED ARMS */}
+                  {/* NEAR ARM */}
                   <line x1={chestX} y1={chestY} x2={elbowX} y2={elbowY} stroke="#00F0FF" strokeWidth="9" strokeLinecap="round" />
                   <circle cx={elbowX} cy={elbowY} r="5" fill="#D4FF00" />
                   <line x1={elbowX} y1={elbowY} x2={armEndX} y2={armEndY} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
@@ -858,9 +912,17 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={210} cy={210} rx={110} ry={8} fill="url(#char3dFloorShadow)" />
 
-                  {/* Arms Planted Rigidly */}
-                  <line x1="285" y1="140" x2="285" y2="200" stroke="#00F0FF" strokeWidth="9" strokeLinecap="round" />
-                  <circle cx="285" cy="200" r="6" fill="#D4FF00" />
+                  {/* Far Arm Planted */}
+                  <line x1="276" y1="140" x2="276" y2="172" stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="276" cy="172" r="5" fill="#0284C7" />
+                  <line x1="276" y1="172" x2="276" y2="200" stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="276" cy="200" r="5" fill="#0284C7" />
+
+                  {/* Near Arm Planted */}
+                  <line x1="286" y1="140" x2="286" y2="172" stroke={nearLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx="286" cy="172" r="6" fill="#D4FF00" />
+                  <line x1="286" y1="172" x2="286" y2="202" stroke={nearLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx="286" cy="202" r="6" fill="#D4FF00" />
 
                   {/* 3D Torso */}
                   <line x1="180" y1="150" x2="285" y2="140" stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
@@ -930,10 +992,17 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx="220" cy={headY + 95} r="9" fill="#1E293B" />
 
                   {/* Lower Legs (Hip -> Knee -> Ankle crossed behind) */}
-                  <line x1="220" y1={headY + 95} x2="215" y2={headY + 130} stroke={nearLimbStroke} strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="215" cy={headY + 130} r="6" fill="#D4FF00" />
-                  <line x1="215" y1={headY + 130} x2="210" y2={headY + 160} stroke={nearLimbStroke} strokeWidth="9" strokeLinecap="round" />
-                  <circle cx="210" cy={headY + 160} r="5" fill="#D4FF00" />
+                  {/* Left Leg */}
+                  <line x1="220" y1={headY + 95} x2="210" y2={headY + 130} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx="210" cy={headY + 130} r="5" fill="#0284C7" />
+                  <line x1="210" y1={headY + 130} x2="216" y2={headY + 160} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx="216" cy={headY + 160} r="5" fill="#0284C7" />
+
+                  {/* Right Leg */}
+                  <line x1="220" y1={headY + 95} x2="228" y2={headY + 130} stroke={nearLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx="228" cy={headY + 130} r="6" fill="#D4FF00" />
+                  <line x1="228" y1={headY + 130} x2="222" y2={headY + 160} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx="222" cy={headY + 160} r="5" fill="#D4FF00" />
 
                   {isMuscleMode && (
                     <text x="135" y={headY + 45} fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">LATISSIMUS DORSI & BICEPS PEAK</text>
@@ -957,19 +1026,30 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
               const shoulderY = 150 + dip * 0.7;
               const elbowX = 285 + dip * 0.35;
               const elbowY = 165 + dip * 0.45;
-              const headX = shoulderX + 18;
-              const headY = shoulderY - 8;
+              const headX = shoulderX + 14;
+              const headY = shoulderY + 16;
 
               return (
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={200} cy={215} rx={95} ry={8} fill="url(#char3dFloorShadow)" />
 
-                  {/* Legs from Feet to High Pike Hips */}
+                  {/* Far Leg */}
+                  <line x1={footX - 8} y1={footY} x2="148" y2="150" stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx="148" cy="150" r="5" fill="#0284C7" />
+                  <line x1="148" y1="150" x2={hipX - 8} y2={hipY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+
+                  {/* Near Leg */}
                   <circle cx={footX} cy={footY} r="7" fill="#0284C7" />
-                  <line x1={footX} y1={footY} x2="155" y2="150" stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="155" cy="150" r="6" fill="#0284C7" />
+                  <line x1={footX} y1={footY} x2="155" y2="150" stroke={nearLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx="155" cy="150" r="6" fill="#D4FF00" />
                   <line x1="155" y1="150" x2={hipX} y2={hipY} stroke={nearLimbStroke} strokeWidth="12" strokeLinecap="round" />
                   <circle cx={hipX} cy={hipY} r="9" fill="#1E293B" />
+
+                  {/* Far Arm */}
+                  <line x1={shoulderX - 10} y1={shoulderY - 5} x2={elbowX - 10} y2={elbowY - 5} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={elbowX - 10} cy={elbowY - 5} r="5" fill="#0284C7" />
+                  <line x1={elbowX - 10} y1={elbowY - 5} x2={handX - 10} y2={handY} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={handX - 10} cy={handY} r="5" fill="#0284C7" />
 
                   {/* Inverted Torso (Hips down to Shoulders) */}
                   <line x1={hipX} y1={hipY} x2={shoulderX} y2={shoulderY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
@@ -979,7 +1059,7 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   {/* Head angling toward floor */}
                   <circle cx={headX} cy={headY} r="14" fill="url(#char3dHead)" />
 
-                  {/* 3D Arms (Shoulder -> Elbow -> Planted Floor Hands) */}
+                  {/* Near Arm (Shoulder -> Elbow -> Planted Floor Hands) */}
                   <line x1={shoulderX} y1={shoulderY} x2={elbowX} y2={elbowY} stroke={activeMuscleStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={elbowX} cy={elbowY} r="6" fill="#D4FF00" />
                   <line x1={elbowX} y1={elbowY} x2={handX} y2={handY} stroke={nearLimbStroke} strokeWidth="9" strokeLinecap="round" />
@@ -1108,6 +1188,16 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <line x1={wallX} y1="75" x2={wallX + 15} y2="75" stroke="#1E293B" strokeWidth="1" />
                   <line x1={wallX} y1="120" x2={wallX + 15} y2="120" stroke="#1E293B" strokeWidth="1" />
 
+                  {/* FAR LEG (Stacked 90°) */}
+                  <line x1={hipX - 10} y1={hipY} x2={kneeX - 10} y2={kneeY} stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx={kneeX - 10} cy={kneeY} r="6" fill="#0284C7" />
+                  <line x1={kneeX - 10} y1={kneeY} x2={ankleX - 10} y2={ankleY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <ellipse cx={ankleX - 5} cy={ankleY} rx="8" ry="4" fill="#0284C7" />
+
+                  {/* FAR ARM RESTING ON THIGH */}
+                  <line x1={hipX} y1={chestY + 10} x2="185" y2="138" stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx="185" cy="138" r="4" fill="#0284C7" />
+
                   {/* Back Flat Against Wall */}
                   <line x1={hipX} y1={hipY} x2={hipX} y2={chestY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
                   <line x1={hipX} y1={hipY} x2={hipX} y2={chestY} stroke={isMuscleMode ? '#00F0FF' : '#475569'} strokeWidth="12" strokeLinecap="round" />
@@ -1115,23 +1205,22 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={hipX} cy={chestY} r="8" fill="#1E293B" />
                   <circle cx={hipX + 5} cy={headY} r="14" fill="url(#char3dHead)" />
 
-                  {/* Horizontal Thigh (90° Knee Flexion) */}
+                  {/* NEAR LEG (Horizontal Thigh & Vertical Shin 90°) */}
                   <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke={activeMuscleStroke} strokeWidth="13" strokeLinecap="round" />
                   <circle cx={kneeX} cy={kneeY} r="8" fill="#D4FF00" />
-
-                  {/* Vertical Shin to Floor (90° Stacked) */}
                   <line x1={kneeX} y1={kneeY} x2={ankleX} y2={ankleY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={ankleX} cy={ankleY} r="6" fill="#D4FF00" />
                   <ellipse cx={ankleX + 5} cy={ankleY} rx="9" ry="4" fill="#D4FF00" />
 
-                  {/* Arms resting on thighs */}
-                  <line x1={hipX} y1={chestY + 10} x2="190" y2="140" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+                  {/* NEAR ARM RESTING ON THIGH */}
+                  <line x1={hipX} y1={chestY + 12} x2="195" y2="142" stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="195" cy="142" r="5" fill="#D4FF00" />
 
                   {/* Quad heatwave pulse */}
                   <circle cx="185" cy={kneeY} r={14 + microPulse * 2} fill="none" stroke="#D4FF00" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.85" />
 
                   {isMuscleMode && (
-                    <text x="140" y="130" fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">ISOMETRIC QUADRICEPS BURN (90°)</text>
+                    <text x="140" y={130} fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">ISOMETRIC QUADRICEPS BURN (90°)</text>
                   )}
                 </g>
               );
@@ -1148,6 +1237,8 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
               const shoulderY = 145 + microPulse;
               const hipX = 185;
               const hipY = 165 + microPulse;
+              const bottomKneeX = 145;
+              const bottomKneeY = 180 + microPulse * 0.5;
               const footX = 105;
               const footY = 195;
 
@@ -1155,18 +1246,28 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={200} cy={210} rx={105} ry={8} fill="url(#char3dFloorShadow)" />
 
+                  {/* Bottom Supporting Leg (Hip -> Knee -> Foot) */}
+                  <line x1={hipX} y1={hipY} x2={bottomKneeX} y2={bottomKneeY} stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx={bottomKneeX} cy={bottomKneeY} r="6" fill="#0284C7" />
+                  <line x1={bottomKneeX} y1={bottomKneeY} x2={footX - 5} y2={footY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={footX - 5} cy={footY} r="6" fill="#0284C7" />
+
                   {/* Grounded Elbow Support */}
                   <line x1={shoulderX} y1={shoulderY} x2={elbowX} y2={elbowY} stroke="#00F0FF" strokeWidth="9" strokeLinecap="round" />
                   <circle cx={elbowX} cy={elbowY} r="6" fill="#D4FF00" />
                   <line x1={elbowX} y1={elbowY} x2={elbowX + 25} y2={elbowY} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
 
                   {/* Rigid Diagonal Torso Beam */}
-                  <line x1={footX} y1={footY} x2={hipX} y2={hipY} stroke={nearLimbStroke} strokeWidth="12" strokeLinecap="round" />
-                  <circle cx={hipX} cy={hipY} r="8" fill="#1E293B" />
                   <line x1={hipX} y1={hipY} x2={shoulderX} y2={shoulderY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
                   <line x1={hipX} y1={hipY} x2={shoulderX} y2={shoulderY} stroke={isMuscleMode ? '#D4FF00' : '#475569'} strokeWidth="12" strokeLinecap="round" />
+                  <circle cx={hipX} cy={hipY} r="8" fill="#1E293B" />
                   <circle cx={shoulderX} cy={shoulderY} r="8" fill="#1E293B" />
-                  <circle cx={footX} cy={footY} r="7" fill="#0284C7" />
+
+                  {/* Top Stacked Leg (Hip -> Knee -> Foot) */}
+                  <line x1={hipX} y1={hipY} x2={bottomKneeX + 5} y2={bottomKneeY - 3} stroke={nearLimbStroke} strokeWidth="12" strokeLinecap="round" />
+                  <circle cx={bottomKneeX + 5} cy={bottomKneeY - 3} r="6" fill="#D4FF00" />
+                  <line x1={bottomKneeX + 5} y1={bottomKneeY - 3} x2={footX} y2={footY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={footX} cy={footY} r="7" fill="#D4FF00" />
 
                   {/* 3D Head */}
                   <circle cx={shoulderX + 22} cy={shoulderY - 10} r="14" fill="url(#char3dHead)" />
@@ -1194,15 +1295,26 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
               const headX = chestX - 18;
               const headY = chestY - 12;
 
-              // Left leg extending, right leg tucking
-              const leftKneeX = 135 - rot * 40;
-              const leftKneeY = 165 - rot * 25;
-              const leftFootX = leftKneeX - 55;
+              // Alternating legs (one extending, one driving)
+              const leftKneeX = 145 - rot * 35;
+              const leftKneeY = 165 - rot * 20;
+              const leftFootX = leftKneeX - 50;
               const leftFootY = leftKneeY + 15;
+
+              const rightKneeX = 145 + rot * 35;
+              const rightKneeY = 165 + rot * 20;
+              const rightFootX = rightKneeX - 50;
+              const rightFootY = rightKneeY + 15;
 
               return (
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={200} cy={212} rx={110} ry={8} fill="url(#char3dFloorShadow)" />
+
+                  {/* Far Leg Bicycling */}
+                  <line x1={hipX - 8} y1={hipY} x2={rightKneeX - 8} y2={rightKneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={rightKneeX - 8} cy={rightKneeY} r="5" fill="#0284C7" />
+                  <line x1={rightKneeX - 8} y1={rightKneeY} x2={rightFootX - 8} y2={rightFootY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={rightFootX - 8} cy={rightFootY} r="4" fill="#0284C7" />
 
                   {/* Torso Curling Upward with Oblique Twist */}
                   <line x1={hipX} y1={hipY} x2={chestX} y2={chestY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
@@ -1211,11 +1323,16 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={chestX} cy={chestY} r="8" fill="#1E293B" />
                   <circle cx={headX} cy={headY} r="14" fill="url(#char3dHead)" />
 
-                  {/* Hands cradled, opposite elbow rotating to knee */}
-                  <line x1={chestX} y1={chestY} x2={chestX + 25 * rot} y2={chestY + 15} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
-                  <circle cx={chestX + 25 * rot} cy={chestY + 15} r="5" fill="#D4FF00" />
+                  {/* Far Arm Cradling Head */}
+                  <line x1={chestX - 6} y1={chestY - 6} x2={headX - 12} y2={headY - 6} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={headX - 12} cy={headY - 6} r="4" fill="#0284C7" />
 
-                  {/* Articulated Bicycling Legs */}
+                  {/* Near Arm Rotating to Opposite Knee */}
+                  <line x1={chestX} y1={chestY} x2={chestX + 28 * rot} y2={chestY + 16} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={chestX + 28 * rot} cy={chestY + 16} r="5" fill="#D4FF00" />
+                  <line x1={chestX + 28 * rot} y1={chestY + 16} x2={headX} y2={headY + 6} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+
+                  {/* Near Leg Bicycling */}
                   <line x1={hipX} y1={hipY} x2={leftKneeX} y2={leftKneeY} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
                   <circle cx={leftKneeX} cy={leftKneeY} r="6" fill="#D4FF00" />
                   <line x1={leftKneeX} y1={leftKneeY} x2={leftFootX} y2={leftFootY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
@@ -1242,11 +1359,15 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={210} cy={210} rx={110} ry={8} fill="url(#char3dFloorShadow)" />
 
-                  {/* Grounded Supporting Knee & Arm */}
-                  <line x1={hipX} y1={hipY} x2={hipX - 15} y2="200" stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
-                  <circle cx={hipX - 15} cy="200" r="6" fill="#0284C7" />
-                  <line x1={shoulderX} y1={shoulderY} x2={shoulderX} y2="200" stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
-                  <circle cx={shoulderX} cy="200" r="6" fill="#0284C7" />
+                  {/* Grounded Supporting Knee & Leg on Floor */}
+                  <line x1={hipX} y1={hipY} x2={hipX} y2="198" stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={hipX} cy="198" r="6" fill="#0284C7" />
+                  <line x1={hipX} y1="198" x2={hipX - 35} y2="198" stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={hipX - 35} cy="198" r="5" fill="#0284C7" />
+
+                  {/* Grounded Supporting Arm on Floor */}
+                  <line x1={shoulderX} y1={shoulderY} x2={shoulderX} y2="198" stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={shoulderX} cy="198" r="6" fill="#0284C7" />
 
                   {/* Neutral Spine Beam */}
                   <line x1={hipX} y1={hipY} x2={shoulderX} y2={shoulderY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
@@ -1255,16 +1376,20 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={shoulderX} cy={shoulderY} r="8" fill="#1E293B" />
                   <circle cx={shoulderX + 22} cy={shoulderY - 10} r="14" fill="url(#char3dHead)" />
 
-                  {/* Extended Opposite Leg Straight Back */}
-                  <line x1={hipX} y1={hipY} x2={hipX - 45 - reach} y2={hipY - reach * 0.2} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
-                  <circle cx={hipX - 45 - reach} cy={hipY - reach * 0.2} r="6" fill="#D4FF00" />
+                  {/* Extended Opposite Leg Straight Back (Articulated Hip -> Knee -> Foot) */}
+                  <line x1={hipX} y1={hipY} x2={hipX - 25 - reach * 0.5} y2={hipY - reach * 0.15} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
+                  <circle cx={hipX - 25 - reach * 0.5} cy={hipY - reach * 0.15} r="6" fill="#D4FF00" />
+                  <line x1={hipX - 25 - reach * 0.5} y1={hipY - reach * 0.15} x2={hipX - 55 - reach} y2={hipY - reach * 0.25} stroke={activeMuscleStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={hipX - 55 - reach} cy={hipY - reach * 0.25} r="5" fill="#D4FF00" />
 
-                  {/* Extended Opposite Arm Straight Forward */}
-                  <line x1={shoulderX} y1={shoulderY} x2={shoulderX + 45 + reach} y2={shoulderY - reach * 0.2} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
-                  <circle cx={shoulderX + 45 + reach} cy={shoulderY - reach * 0.2} r="5" fill="#D4FF00" />
+                  {/* Extended Opposite Arm Straight Forward (Articulated Shoulder -> Elbow -> Hand) */}
+                  <line x1={shoulderX} y1={shoulderY} x2={shoulderX + 25 + reach * 0.5} y2={shoulderY - reach * 0.15} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={shoulderX + 25 + reach * 0.5} cy={shoulderY - reach * 0.15} r="5" fill="#D4FF00" />
+                  <line x1={shoulderX + 25 + reach * 0.5} y1={shoulderY - reach * 0.15} x2={shoulderX + 55 + reach} y2={shoulderY - reach * 0.25} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={shoulderX + 55 + reach} cy={shoulderY - reach * 0.25} r="5" fill="#D4FF00" />
 
                   {isMuscleMode && (
-                    <text x="120" y="115" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">POSTERIOR CHAIN MULTIFIDUS & GLUTE STABILITY</text>
+                    <text x="120" y={115} fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">POSTERIOR CHAIN MULTIFIDUS & GLUTE STABILITY</text>
                   )}
                 </g>
               );
@@ -1291,9 +1416,15 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={shoulderX} cy={shoulderY} r="8" fill="#1E293B" />
                   <circle cx={shoulderX + 25} cy={shoulderY - 5} r="14" fill="url(#char3dHead)" />
 
-                  {/* Stationary Right Leg (90/90) */}
+                  {/* Stationary Right Leg (90/90 Tabletop) */}
                   <line x1={hipX} y1={hipY} x2={hipX} y2="140" stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx={hipX} cy="140" r="6" fill="#0284C7" />
                   <line x1={hipX} y1="140" x2={hipX - 40} y2="140" stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={hipX - 40} cy="140" r="5" fill="#0284C7" />
+
+                  {/* Stationary Right Arm Pointing Straight Up */}
+                  <line x1={shoulderX} y1={shoulderY} x2={shoulderX} y2="135" stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={shoulderX} cy="135" r="5" fill="#0284C7" />
 
                   {/* Extending Left Leg Downward */}
                   <line x1={hipX} y1={hipY} x2={hipX - 35 - reach * 0.8} y2={hipY - 40 + reach * 0.6} stroke={activeMuscleStroke} strokeWidth="12" strokeLinecap="round" />
@@ -1304,7 +1435,7 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={shoulderX + 15 + reach * 0.7} cy={shoulderY - 40 + reach * 0.6} r="5" fill="#D4FF00" />
 
                   {isMuscleMode && (
-                    <text x="120" y="115" fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">DEEP TRANSVERSE BRACE (NO ARCHING)</text>
+                    <text x="120" y={115} fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">DEEP TRANSVERSE BRACE (NO ARCHING)</text>
                   )}
                 </g>
               );
@@ -1341,7 +1472,11 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   {/* Head resting peacefully */}
                   <circle cx={chestX + 16} cy={chestY + 4} r="13" fill="url(#char3dHead)" />
 
-                  {/* Arms Reaching Flat Along Ground */}
+                  {/* Far Arm Reaching Flat Along Ground */}
+                  <line x1={chestX - 6} y1={chestY - 4} x2={handX - 8} y2={handY - 4} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={handX - 8} cy={handY - 4} r="4" fill="#0284C7" />
+
+                  {/* Near Arm Reaching Flat Along Ground */}
                   <line x1={chestX} y1={chestY} x2={handX} y2={handY} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
                   <circle cx={handX} cy={handY} r="5" fill="#D4FF00" />
 
@@ -1415,10 +1550,22 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
               // Trailing curtsy sweep leg
               const sweepFootX = hipX - lateral * 45;
               const sweepFootY = 210;
+              const sweepKneeX = (hipX + sweepFootX) / 2 - 8;
+              const sweepKneeY = (hipY + sweepFootY) / 2;
 
               return (
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={plantFootX} cy={218} rx={45} ry={8} fill="url(#char3dFloorShadow)" />
+
+                  {/* Trailing Cross Sweep Leg (Hip -> Knee -> Foot) */}
+                  <line x1={hipX} y1={hipY} x2={sweepKneeX} y2={sweepKneeY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <circle cx={sweepKneeX} cy={sweepKneeY} r="5" fill="#0284C7" />
+                  <line x1={sweepKneeX} y1={sweepKneeY} x2={sweepFootX} y2={sweepFootY} stroke={farLimbStroke} strokeWidth="9" strokeLinecap="round" />
+                  <circle cx={sweepFootX} cy={sweepFootY} r="5" fill="#0284C7" />
+
+                  {/* Far Counter-Swinging Arm */}
+                  <line x1={chestX - 6} y1={chestY + 10} x2={chestX + lateral * 30} y2={chestY + 28} stroke={farLimbStroke} strokeWidth="7" strokeLinecap="round" />
+                  <circle cx={chestX + lateral * 30} cy={chestY + 28} r="4" fill="#0284C7" />
 
                   {/* 3D Torso Angling with Stride */}
                   <line x1={hipX} y1={hipY} x2={chestX} y2={chestY} stroke="url(#char3dTorso)" strokeWidth="18" strokeLinecap="round" />
@@ -1433,16 +1580,12 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <line x1={(hipX + plantFootX) / 2 + 10} y1="180" x2={plantFootX} y2={plantFootY} stroke={nearLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <circle cx={plantFootX} cy={plantFootY} r="6" fill="#D4FF00" />
 
-                  {/* Trailing Cross Sweep Leg */}
-                  <line x1={hipX} y1={hipY} x2={sweepFootX} y2={sweepFootY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
-                  <circle cx={sweepFootX} cy={sweepFootY} r="5" fill="#0284C7" />
-
-                  {/* Counter-Swinging Skater Arms */}
+                  {/* Near Swinging Arm */}
                   <line x1={chestX} y1={chestY + 10} x2={chestX - lateral * 35} y2={chestY + 30} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
                   <circle cx={chestX - lateral * 35} cy={chestY + 30} r="5" fill="#D4FF00" />
 
                   {isMuscleMode && (
-                    <text x="130" y="70" fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">GLUTEUS MEDIUS & LATERAL FORCE ABSORPTION</text>
+                    <text x="130" y={70} fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">GLUTEUS MEDIUS & LATERAL FORCE ABSORPTION</text>
                   )}
                 </g>
               );
@@ -1468,9 +1611,15 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={210} cy={210} rx={110} ry={8} fill="url(#char3dFloorShadow)" />
 
-                  {/* Knees on Ground */}
+                  {/* Far Leg & Arm Grounded */}
+                  <circle cx={kneeX - 8} cy={kneeY - 2} r="7" fill="#0284C7" />
+                  <line x1={kneeX - 8} y1={kneeY - 2} x2={hipX - 8} y2={hipY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
+                  <line x1={shoulderX - 8} y1={shoulderY} x2={handX - 8} y2={handY} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={handX - 8} cy={handY} r="5" fill="#0284C7" />
+
+                  {/* Near Knees on Ground */}
                   <circle cx={kneeX} cy={kneeY} r="8" fill="#0284C7" />
-                  <line x1={kneeX} y1={kneeY} x2={hipX} y2={hipY} stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <line x1={kneeX} y1={kneeY} x2={hipX} y2={hipY} stroke={nearLimbStroke} strokeWidth="11" strokeLinecap="round" />
                   <circle cx={hipX} cy={hipY} r="8" fill="#1E293B" />
 
                   {/* Dynamic Curving Spine */}
@@ -1490,7 +1639,7 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   />
                   <circle cx={shoulderX} cy={shoulderY} r="8" fill="#1E293B" />
 
-                  {/* Arms Supporting Floor */}
+                  {/* Near Arms Supporting Floor */}
                   <line x1={shoulderX} y1={shoulderY} x2={handX} y2={handY} stroke={nearLimbStroke} strokeWidth="9" strokeLinecap="round" />
                   <circle cx={handX} cy={handY} r="6" fill="#D4FF00" />
 
@@ -1522,7 +1671,12 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={210} cy={210} rx={115} ry={8} fill="url(#char3dFloorShadow)" />
 
+                  {/* Far Supporting Arm */}
+                  <line x1={shoulderX - 10} y1={shoulderY - 2} x2={handX - 10} y2={handY} stroke={farLimbStroke} strokeWidth="8" strokeLinecap="round" />
+                  <circle cx={handX - 10} cy={handY} r="5" fill="#0284C7" />
+
                   {/* Grounded Lower Body */}
+                  <line x1={feetX - 6} y1={feetY} x2={hipX} y2={hipY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <line x1={feetX} y1={feetY} x2={hipX} y2={hipY} stroke={nearLimbStroke} strokeWidth="12" strokeLinecap="round" />
                   <circle cx={feetX} cy={feetY} r="6" fill="#0284C7" />
                   <circle cx={hipX} cy={hipY} r="8" fill="#1E293B" />
@@ -1544,7 +1698,7 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   />
                   <circle cx={shoulderX} cy={shoulderY} r="8" fill="#1E293B" />
 
-                  {/* Supporting Hands & Arms */}
+                  {/* Near Supporting Arm */}
                   <line x1={shoulderX} y1={shoulderY} x2={handX} y2={handY} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
                   <circle cx={handX} cy={handY} r="6" fill="#D4FF00" />
 
@@ -1571,13 +1725,17 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
               const frontKneeY = 160;
               const rearFootX = 125;
               const rearFootY = 215;
+              const rearKneeX = (hipX + rearFootX) / 2;
+              const rearKneeY = (hipY + rearFootY) / 2;
 
               return (
                 <g filter="url(#forgeGlow)">
                   <ellipse cx={220} cy={218} rx={95} ry={10} fill="url(#char3dFloorShadow)" />
 
-                  {/* Rear Straight Leg */}
-                  <line x1={hipX} y1={hipY} x2={rearFootX} y2={rearFootY} stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  {/* Rear Straight Leg (Hip -> Knee -> Foot) */}
+                  <line x1={hipX} y1={hipY} x2={rearKneeX} y2={rearKneeY} stroke={farLimbStroke} strokeWidth="11" strokeLinecap="round" />
+                  <circle cx={rearKneeX} cy={rearKneeY} r="6" fill="#0284C7" />
+                  <line x1={rearKneeX} y1={rearKneeY} x2={rearFootX} y2={rearFootY} stroke={farLimbStroke} strokeWidth="10" strokeLinecap="round" />
                   <ellipse cx={rearFootX} cy={rearFootY} rx="9" ry="4" fill="#0284C7" />
 
                   {/* 3D Torso (Upright centered) */}
@@ -1594,10 +1752,13 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
                   <circle cx={frontKneeX} cy="215" r="6" fill="#D4FF00" />
                   <ellipse cx={frontKneeX + 3} cy="215" rx="9" ry="4" fill="#D4FF00" />
 
-                  {/* Outstretched Arms */}
-                  <line x1="120" y1={80 + breathe} x2="305" y2={80 + breathe} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
-                  <circle cx="120" cy={80 + breathe} r="5" fill="#00F0FF" />
-                  <circle cx="305" cy={80 + breathe} r="5" fill="#00F0FF" />
+                  {/* Back Arm Reaching from Shoulder */}
+                  <line x1={hipX} y1={chestY + 10} x2="115" y2={chestY + 10} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="115" cy={chestY + 10} r="5" fill="#00F0FF" />
+
+                  {/* Front Arm Reaching from Shoulder */}
+                  <line x1={hipX} y1={chestY + 10} x2="305" y2={chestY + 10} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+                  <circle cx="305" cy={chestY + 10} r="5" fill="#00F0FF" />
 
                   {isMuscleMode && (
                     <text x="140" y={110} fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">ISOMETRIC QUAD & ADDUCTOR HOLD</text>
@@ -1794,44 +1955,119 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
           </svg>
         )}
 
-        {/* Real-Time Cadence HUD */}
-        <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-charcoal-950/90 border border-charcoal-700 text-[10px] text-forge-lime font-mono tracking-wider uppercase flex items-center gap-1.5 shadow-md">
-          <Activity className="w-3.5 h-3.5 text-forge-lime animate-pulse" />
-          <span>{isPlaying ? `${speed}x 3D Video Feed` : 'Paused'}</span>
+        {/* High-Tech Biomechanical Corner Reticles */}
+        <div className="absolute inset-0 pointer-events-none p-2 flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <svg className="w-5 h-5 text-forge-lime/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M 0 10 L 0 0 L 10 0" />
+            </svg>
+            <svg className="w-5 h-5 text-forge-lime/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M 14 0 L 24 0 L 24 10" />
+            </svg>
+          </div>
+          <div className="flex justify-between items-end">
+            <svg className="w-5 h-5 text-forge-lime/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M 0 14 L 0 24 L 10 24" />
+            </svg>
+            <svg className="w-5 h-5 text-forge-lime/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M 14 24 L 24 24 L 24 14" />
+            </svg>
+          </div>
         </div>
 
-        {/* Real-Time Phase Indicator */}
-        <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-charcoal-950/90 border border-charcoal-700 text-[10px] text-forge-cyan font-mono tracking-wider uppercase">
-          {Math.cos(phase) < 0 ? 'Concentric (Drive)' : 'Eccentric (Control)'}
+        {/* Ambient Laser Scanline */}
+        {isPlaying && (
+          <div className="absolute inset-x-0 h-14 bg-gradient-to-b from-transparent via-forge-lime/10 to-transparent pointer-events-none animate-scanline" />
+        )}
+
+        {/* Real-Time Telemetry HUD - Top Left */}
+        <div className="absolute top-2.5 left-2.5 flex items-center gap-2">
+          <div className="px-2.5 py-1 rounded-full bg-charcoal-950/90 border border-charcoal-700/80 text-[10px] text-forge-lime font-mono tracking-wider uppercase flex items-center gap-1.5 shadow-md backdrop-blur-md">
+            <Activity className="w-3.5 h-3.5 text-forge-lime animate-pulse" />
+            <span>{isPlaying ? `${speed}x KINETIC FEED` : 'FEED PAUSED'}</span>
+          </div>
+        </div>
+
+        {/* Real-Time Telemetry HUD - Top Right */}
+        <div className="absolute top-2.5 right-2.5 flex items-center gap-2">
+          <div className="px-2.5 py-1 rounded-full bg-charcoal-950/90 border border-charcoal-700/80 text-[10px] text-forge-cyan font-mono tracking-wider uppercase flex items-center gap-2 shadow-md backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-forge-cyan animate-ping" />
+            <span>{Math.cos(phase) < -0.2 ? 'CONCENTRIC DRIVE' : Math.cos(phase) > 0.2 ? 'ECCENTRIC CONTROL' : 'ISOMETRIC PEAK'}</span>
+          </div>
+        </div>
+
+        {/* Real-Time Biomechanical Waveform Meter - Bottom Left */}
+        <div className="absolute bottom-2.5 left-2.5 hidden sm:flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-charcoal-950/85 border border-charcoal-800 text-[9px] font-mono text-gray-400 backdrop-blur-md pointer-events-none">
+          <div className="flex flex-col">
+            <span className="text-[8px] text-forge-lime font-bold tracking-wider">MOTION VECTOR</span>
+            <span className="text-gray-300">CURVE: {Math.round(cycle * 100)}%</span>
+          </div>
+          {/* Dynamic SVG Wave */}
+          <svg className="w-16 h-5 overflow-visible" viewBox="0 0 60 20">
+            <path
+              d="M 0 10 Q 15 2 30 10 T 60 10"
+              fill="none"
+              stroke="#334155"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M 0 10 Q 15 2 30 10 T 60 10"
+              fill="none"
+              stroke="#D4FF00"
+              strokeWidth="1.5"
+              strokeDasharray="60"
+              strokeDashoffset={60 - (cycle * 60)}
+            />
+            {/* Animated Tracking Pulse Dot */}
+            <circle
+              cx={cycle * 60}
+              cy={10 - Math.sin(phase) * 7}
+              r="3"
+              fill="#D4FF00"
+              className="drop-shadow-forge-glow"
+            />
+          </svg>
+        </div>
+
+        {/* Live Cadence Pulse Ring - Bottom Right */}
+        <div className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-charcoal-950/85 border border-charcoal-800 text-[9px] font-mono text-gray-300 backdrop-blur-md">
+          <Crosshair className="w-3 h-3 text-forge-lime animate-spin" style={{ animationDuration: '8s' }} />
+          <span>FORM LOCK: <strong className="text-white">OPTIMAL</strong></span>
         </div>
       </div>
 
-      {/* Control Bar: Play/Pause, Restart, Sound, Fullscreen */}
+      {/* Control Bar: Play/Pause, Restart, Sound, Fullscreen with Smooth Spring Physics */}
       <div className="flex items-center justify-between pt-2">
         <div className="flex items-center gap-2">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => setIsPlaying(!isPlaying)}
-            className="p-2.5 rounded-xl bg-forge-lime text-black font-bold hover:bg-forge-lime-hover active:scale-95 transition-all shadow-forge-glow"
+            className="p-2.5 rounded-xl bg-forge-lime text-black font-bold hover:bg-forge-lime-hover transition-all shadow-forge-glow flex items-center justify-center cursor-pointer"
             aria-label={isPlaying ? 'Pause demonstration' : 'Play demonstration'}
           >
-            {isPlaying ? <Pause className="w-4 h-4 fill-black" /> : <Play className="w-4 h-4 fill-black" />}
-          </button>
+            {isPlaying ? <Pause className="w-4 h-4 fill-black" /> : <Play className="w-4 h-4 fill-black ml-0.5" />}
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
             onClick={handleRestart}
-            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 active:scale-95 transition-all"
+            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 transition-all cursor-pointer"
             title="Replay step from beginning"
           >
             <RotateCcw className="w-4 h-4" />
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
             onClick={() => setIsMuted(!isMuted)}
-            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 active:scale-95 transition-all"
+            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 transition-all cursor-pointer"
             title={isMuted ? 'Unmute chimes' : 'Mute chimes'}
           >
             {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-forge-lime" />}
-          </button>
+          </motion.button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -1839,13 +2075,15 @@ export const MotionDemoPlayer: React.FC<MotionDemoPlayerProps> = ({
             Form Cadence: <strong className="text-forge-lime">{speed === 0.5 ? 'Slow-Mo' : speed === 1.5 ? 'Fast Tempo' : 'Strict 1:1'}</strong>
           </span>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
             onClick={toggleFullscreen}
-            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 active:scale-95 transition-all"
+            className="p-2.5 rounded-xl bg-charcoal-800 text-gray-300 hover:text-white hover:bg-charcoal-700 transition-all cursor-pointer"
             title="Expand Fullscreen"
           >
             <Maximize2 className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
 

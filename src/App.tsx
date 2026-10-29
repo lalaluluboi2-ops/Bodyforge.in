@@ -272,84 +272,6 @@ export const App: React.FC = () => {
     );
   }
 
-  // Active workout fullscreen player
-  if (isPlayingWorkout) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.98 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-charcoal-950"
-      >
-        <LiveWorkoutPlayerView
-          workout={isPlayingWorkout}
-          uid={profile.uid}
-          onExit={() => setIsPlayingWorkout(null)}
-          onFinished={handleWorkoutFinished}
-        />
-      </motion.div>
-    );
-  }
-
-  // Individual workout detail view with real step-by-step motion video, safety cues, and reviews
-  if (selectedWorkout) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -16 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-charcoal-950"
-      >
-        <WorkoutDetailView
-          workout={selectedWorkout}
-          onBack={() => setSelectedWorkout(null)}
-          onStart={(w) => setIsPlayingWorkout(w)}
-          currentUserId={profile.uid}
-          currentUserName={profile.displayName || 'Athlete'}
-        />
-      </motion.div>
-    );
-  }
-
-  // Individual wellness educational article view
-  if (selectedArticle) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -16 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-charcoal-950"
-      >
-        <WellnessArticleView
-          article={selectedArticle}
-          onBack={() => setSelectedArticle(null)}
-          onSaveRoutine={handleSaveWellnessRoutine}
-          isSaved={savedWellnessRoutines.includes(selectedArticle.id)}
-        />
-      </motion.div>
-    );
-  }
-
-  // Joint Pain & Mobility Library
-  if (isViewingPainLibrary) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -16 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen bg-charcoal-950"
-      >
-        <PainMobilityView
-          onBack={() => setIsViewingPainLibrary(false)}
-        />
-      </motion.div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-charcoal-950 text-gray-100 flex flex-col font-sans selection:bg-forge-lime selection:text-black">
       {/* Network Offline Alert Banner */}
@@ -375,13 +297,13 @@ export const App: React.FC = () => {
                 setSelectedWorkout(WORKOUT_DATABASE[0]);
                 setInAppAlertMessage(null);
               }}
-              className="px-2.5 py-1 rounded-lg bg-forge-lime text-black font-bold text-[11px] flex items-center gap-1 hover:bg-forge-lime-hover transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-forge-lime text-black font-bold text-[11px] flex items-center gap-1 hover:bg-forge-lime-hover transition-colors cursor-pointer"
             >
               <Flame className="w-3 h-3" /> Train Now <ArrowRight className="w-3 h-3" />
             </button>
             <button
               onClick={() => setInAppAlertMessage(null)}
-              className="p-1 text-gray-400 hover:text-white rounded-lg hover:bg-charcoal-800 transition-colors"
+              className="p-1 text-gray-400 hover:text-white rounded-lg hover:bg-charcoal-800 transition-colors cursor-pointer"
               title="Dismiss"
             >
               <X className="w-3.5 h-3.5" />
@@ -390,79 +312,145 @@ export const App: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Main Responsive Navigation */}
-      <Navigation
-        currentTab={currentTab}
-        onSelectTab={handleNavigateTab}
-        isAuthenticated={Boolean(currentUser)}
-        onAuthAction={handleAuthAction}
-        displayName={profile.displayName}
-        onOpenNotifications={() => setShowNotificationModal(true)}
-      />
+      {/* Main Responsive Navigation - shown when not in deep fullscreen workout player or subviews */}
+      {!isPlayingWorkout && !selectedWorkout && !selectedArticle && !isViewingPainLibrary && (
+        <Navigation
+          currentTab={currentTab}
+          onSelectTab={handleNavigateTab}
+          isAuthenticated={Boolean(currentUser)}
+          onAuthAction={handleAuthAction}
+          displayName={profile.displayName}
+          onOpenNotifications={() => setShowNotificationModal(true)}
+        />
+      )}
 
       <main className="flex-1 pb-16 md:pb-6 relative">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {currentTab === 'dashboard' && (
-              <DashboardView
-                profile={profile}
-                history={workoutHistory}
-                dailyWorkout={WORKOUT_DATABASE[0]}
-                featuredArticle={WELLNESS_ARTICLES[0]}
-                onSelectWorkout={(w) => setSelectedWorkout(w)}
-                onOpenLibrary={() => setCurrentTab('library')}
-                onOpenWellness={() => setCurrentTab('wellness')}
-                onSelectArticle={(a) => setSelectedArticle(a)}
-                onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+          {isPlayingWorkout ? (
+            <motion.div
+              key={`player-${isPlayingWorkout.id}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              className="min-h-screen bg-charcoal-950"
+            >
+              <LiveWorkoutPlayerView
+                workout={isPlayingWorkout}
+                uid={profile.uid}
+                onExit={() => setIsPlayingWorkout(null)}
+                onFinished={handleWorkoutFinished}
               />
-            )}
-
-            {currentTab === 'library' && (
-              <WorkoutLibraryView
-                workouts={WORKOUT_DATABASE}
-                onSelectWorkout={(w) => setSelectedWorkout(w)}
+            </motion.div>
+          ) : selectedWorkout ? (
+            <motion.div
+              key={`detail-${selectedWorkout.id}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              className="min-h-screen bg-charcoal-950"
+            >
+              <WorkoutDetailView
+                workout={selectedWorkout}
+                onBack={() => setSelectedWorkout(null)}
+                onStart={(w) => setIsPlayingWorkout(w)}
+                currentUserId={profile.uid}
+                currentUserName={profile.displayName || 'Athlete'}
               />
-            )}
-
-            {currentTab === 'nutrition' && (
-              <NutritionView />
-            )}
-
-            {currentTab === 'wellness' && (
-              <WellnessHubView
-                onSelectArticle={(a) => setSelectedArticle(a)}
-                onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+            </motion.div>
+          ) : selectedArticle ? (
+            <motion.div
+              key={`article-${selectedArticle.id}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              className="min-h-screen bg-charcoal-950"
+            >
+              <WellnessArticleView
+                article={selectedArticle}
+                onBack={() => setSelectedArticle(null)}
+                onSaveRoutine={handleSaveWellnessRoutine}
+                isSaved={savedWellnessRoutines.includes(selectedArticle.id)}
               />
-            )}
-
-            {currentTab === 'seasonal' && (
-              <SeasonalProgramsView
-                onStartProgram={(w) => setSelectedWorkout(w)}
+            </motion.div>
+          ) : isViewingPainLibrary ? (
+            <motion.div
+              key="pain-library"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
+              className="min-h-screen bg-charcoal-950"
+            >
+              <PainMobilityView
+                onBack={() => setIsViewingPainLibrary(false)}
               />
-            )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key={currentTab}
+              initial={{ opacity: 0, y: 8, scale: 0.996 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.996 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {currentTab === 'dashboard' && (
+                <DashboardView
+                  profile={profile}
+                  history={workoutHistory}
+                  dailyWorkout={WORKOUT_DATABASE[0]}
+                  featuredArticle={WELLNESS_ARTICLES[0]}
+                  onSelectWorkout={(w) => setSelectedWorkout(w)}
+                  onOpenLibrary={() => setCurrentTab('library')}
+                  onOpenWellness={() => setCurrentTab('wellness')}
+                  onSelectArticle={(a) => setSelectedArticle(a)}
+                  onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+                />
+              )}
 
-            {currentTab === 'facial' && (
-              <FacialFitnessView
-                onStartRoutine={(w) => setSelectedWorkout(w)}
-              />
-            )}
+              {currentTab === 'library' && (
+                <WorkoutLibraryView
+                  workouts={WORKOUT_DATABASE}
+                  onSelectWorkout={(w) => setSelectedWorkout(w)}
+                />
+              )}
 
-            {currentTab === 'progress' && (
-              <ProgressTrackingView
-                history={workoutHistory}
-                profile={profile}
-                completedWellnessRoutines={savedWellnessRoutines}
-                onClearAllData={handleClearAllData}
-                onUpdateConsent={(consent) => setProfile(p => ({ ...p, wellnessGoalsConsent: consent }))}
-              />
-            )}
-          </motion.div>
+              {currentTab === 'nutrition' && (
+                <NutritionView />
+              )}
+
+              {currentTab === 'wellness' && (
+                <WellnessHubView
+                  onSelectArticle={(a) => setSelectedArticle(a)}
+                  onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+                />
+              )}
+
+              {currentTab === 'seasonal' && (
+                <SeasonalProgramsView
+                  onStartProgram={(w) => setSelectedWorkout(w)}
+                />
+              )}
+
+              {currentTab === 'facial' && (
+                <FacialFitnessView
+                  onStartRoutine={(w) => setSelectedWorkout(w)}
+                />
+              )}
+
+              {currentTab === 'progress' && (
+                <ProgressTrackingView
+                  history={workoutHistory}
+                  profile={profile}
+                  completedWellnessRoutines={savedWellnessRoutines}
+                  onClearAllData={handleClearAllData}
+                  onUpdateConsent={(consent) => setProfile(p => ({ ...p, wellnessGoalsConsent: consent }))}
+                />
+              )}
+            </motion.div>
+          )}
         </AnimatePresence>
       </main>
 

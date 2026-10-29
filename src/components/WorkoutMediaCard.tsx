@@ -199,110 +199,341 @@ export const WorkoutMediaCard: React.FC<WorkoutMediaCardProps> = ({ media }) => 
       }
 
       case 'dips': {
-        const dipY = cycle * 35;
+        const dipY = cycle * 36;
+        const benchX = 250;
+        const hipY = 150 + dipY;
+        const shoulderY = 118 + dipY;
+        const elbowX = 242 + dipY * 0.15;
+        const elbowY = 126 + dipY * 0.85;
+        const kneeY = 175 + dipY * 0.2;
         return (
           <g>
-            <rect x="240" y="145" width="55" height="55" rx="6" fill="#1A222D" stroke="#2C3545" strokeWidth="2" />
-            <circle cx="240" cy="143" r="5" fill="#00F0FF" />
-            <line x1="240" y1="143" x2={225 + dipY * 0.2} y2={120 + dipY} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            {/* Ground */}
+            <line x1="50" y1="210" x2="350" y2="210" stroke="#1F2631" strokeWidth="3" strokeDasharray="6 4" />
+            
+            {/* Bench */}
+            <rect x={benchX} y="135" width="60" height="75" rx="6" fill="#1A222D" stroke="#2C3545" strokeWidth="2" />
+            <rect x={benchX - 6} y="130" width="70" height="10" rx="3" fill="#334155" />
+
+            {/* FAR LEG */}
+            <line x1="215" y1={hipY} x2="175" y2={kneeY} stroke="#0284C7" strokeWidth="8" strokeLinecap="round" />
+            <circle cx="175" cy={kneeY} r="4.5" fill="#0284C7" />
+            <line x1="175" y1={kneeY} x2="135" y2="208" stroke="#0284C7" strokeWidth="7" strokeLinecap="round" />
+            <circle cx="135" cy="208" r="4" fill="#0284C7" />
+
+            {/* FAR ARM on Bench */}
+            <line x1="222" y1={shoulderY} x2={elbowX - 8} y2={elbowY} stroke="#0284C7" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={elbowX - 8} cy={elbowY} r="4.5" fill="#0284C7" />
+            <line x1={elbowX - 8} y1={elbowY} x2={benchX} y2="132" stroke="#0284C7" strokeWidth="6" strokeLinecap="round" />
+            <circle cx={benchX} cy="132" r="3.5" fill="#0284C7" />
+
+            {/* TORSO */}
             <line 
-              x1={225 + dipY * 0.2} 
-              y1={120 + dipY} 
-              x2="200" 
-              y2={155 + dipY} 
+              x1="220" 
+              y1={hipY} 
+              x2="224" 
+              y2={shoulderY} 
               stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
-              strokeWidth={viewMode === 'muscles' ? '12' : '9'} 
+              strokeWidth={viewMode === 'muscles' ? '12' : '10'} 
               strokeLinecap="round" 
             />
-            <circle cx={225 + dipY * 0.2} cy={95 + dipY} r="13" fill="#D4FF00" />
-            <line x1="200" y1={155 + dipY} x2="120" y2="195" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
+            <circle cx="220" cy={hipY} r="7" fill="#1F2631" />
+            <circle cx="224" cy={shoulderY} r="7" fill="#1F2631" />
+
+            {/* HEAD */}
+            <circle cx="224" cy={shoulderY - 18} r="13" fill="#D4FF00" />
+
+            {/* NEAR LEG */}
+            <line x1="220" y1={hipY} x2="180" y2={kneeY} stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx="180" cy={kneeY} r="5" fill="#D4FF00" />
+            <line x1="180" y1={kneeY} x2="140" y2="208" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
+            <circle cx="140" cy="208" r="5" fill="#00F0FF" />
+
+            {/* NEAR ARM on Bench */}
+            <line x1="224" y1={shoulderY} x2={elbowX} y2={elbowY} stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} strokeWidth="8" strokeLinecap="round" />
+            <circle cx={elbowX} cy={elbowY} r="5" fill="#D4FF00" />
+            <line x1={elbowX} y1={elbowY} x2={benchX + 4} y2="132" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={benchX + 4} cy="132" r="4" fill="#00F0FF" />
+
             {viewMode === 'muscles' && (
-              <text x="130" y="100" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
-                TRICEPS BRACHII 100%
+              <text x="110" y="95" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                TRICEPS BRACHII & ANTERIOR DELTOID
               </text>
             )}
           </g>
         );
       }
 
-      case 'crunch':
+      case 'crunch': {
+        const curl = cycle * 28;
+        const hipX = 180;
+        const hipY = 195;
+        const chestX = 135 - curl * 0.4;
+        const chestY = 180 - curl;
+        const headX = chestX - 16;
+        const headY = chestY - 14;
+
+        return (
+          <g>
+            <line x1="40" y1="205" x2="360" y2="205" stroke="#1F2631" strokeWidth="3" />
+
+            {/* FAR LEG (Bent 90/90 on Floor) */}
+            <line x1={hipX} y1={hipY} x2="225" y2="145" stroke="#0284C7" strokeWidth="9" strokeLinecap="round" />
+            <circle cx="225" cy="145" r="5" fill="#0284C7" />
+            <line x1="225" y1="145" x2="265" y2="198" stroke="#0284C7" strokeWidth="8" strokeLinecap="round" />
+            <circle cx="265" cy="198" r="4.5" fill="#0284C7" />
+
+            {/* FAR ARM Cradling Head */}
+            <line x1={chestX} y1={chestY} x2={chestX - 6} y2={chestY - 16} stroke="#0284C7" strokeWidth="6" strokeLinecap="round" />
+            <circle cx={chestX - 6} cy={chestY - 16} r="4" fill="#0284C7" />
+            <line x1={chestX - 6} y1={chestY - 16} x2={headX} y2={headY + 2} stroke="#0284C7" strokeWidth="5" strokeLinecap="round" />
+
+            {/* TORSO CURL */}
+            <line 
+              x1={hipX} 
+              y1={hipY} 
+              x2={chestX} 
+              y2={chestY} 
+              stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
+              strokeWidth={viewMode === 'muscles' ? '12' : '10'} 
+              strokeLinecap="round" 
+            />
+            <circle cx={hipX} cy={hipY} r="7" fill="#1F2631" />
+            <circle cx={chestX} cy={chestY} r="7" fill="#1F2631" />
+
+            {/* HEAD */}
+            <circle cx={headX} cy={headY} r="13" fill="#D4FF00" />
+
+            {/* NEAR LEG */}
+            <line x1={hipX} y1={hipY} x2="230" y2="148" stroke="#D4FF00" strokeWidth="10" strokeLinecap="round" />
+            <circle cx="230" cy="148" r="5" fill="#D4FF00" />
+            <line x1="230" y1="148" x2="270" y2="200" stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx="270" cy="200" r="5" fill="#00F0FF" />
+
+            {/* NEAR ARM Cradling Head */}
+            <line x1={chestX} y1={chestY} x2={chestX} y2={chestY - 18} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={chestX} cy={chestY - 18} r="4.5" fill="#D4FF00" />
+            <line x1={chestX} y1={chestY - 18} x2={headX} y2={headY} stroke="#00F0FF" strokeWidth="6" strokeLinecap="round" />
+
+            {viewMode === 'muscles' && (
+              <text x="130" y="110" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                RECTUS ABDOMINIS [CONCENTRIC CRUNCH]
+              </text>
+            )}
+          </g>
+        );
+      }
+
       case 'leg-raise': {
-        const curl = cycle * 24;
+        const angle = cycle * (Math.PI / 2.3); // 0 to ~78 degrees
+        const hipX = 180;
+        const hipY = 195;
+        const shoulderX = 265;
+        const shoulderY = 195;
+        const headX = 290;
+        const headY = 192;
+        const legLength = 85;
+        const footX = hipX - Math.cos(angle) * legLength;
+        const footY = hipY - Math.sin(angle) * legLength;
+        const kneeX = hipX - Math.cos(angle) * (legLength * 0.55);
+        const kneeY = hipY - Math.sin(angle) * (legLength * 0.55);
+
         return (
           <g>
-            <line x1="40" y1="195" x2="360" y2="195" stroke="#1F2631" strokeWidth="3" />
-            <circle cx="160" cy="190" r="10" fill="#D4FF00" />
-            <line x1="160" y1="190" x2="195" y2="145" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
-            <line x1="195" y1="145" x2="235" y2="190" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
-            <path 
-              d={`M 160 190 Q ${120 - curl * 0.3} ${170 - curl} ${95 - curl * 0.5} ${150 - curl}`} 
-              fill="none" 
+            <line x1="40" y1="205" x2="360" y2="205" stroke="#1F2631" strokeWidth="3" />
+
+            {/* FAR ARM on Mat */}
+            <line x1={shoulderX} y1={shoulderY} x2="220" y2="198" stroke="#0284C7" strokeWidth="6" strokeLinecap="round" />
+            <circle cx="220" cy="198" r="4" fill="#0284C7" />
+
+            {/* FAR LEG (Raising Behind) */}
+            <line x1={hipX} y1={hipY} x2={kneeX - 4} y2={kneeY - 2} stroke="#0284C7" strokeWidth="9" strokeLinecap="round" />
+            <circle cx={kneeX - 4} cy={kneeY - 2} r="4.5" fill="#0284C7" />
+            <line x1={kneeX - 4} y1={kneeY - 2} x2={footX - 4} y2={footY - 2} stroke="#0284C7" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={footX - 4} cy={footY - 2} r="4" fill="#0284C7" />
+
+            {/* TORSO FLAT ON MAT */}
+            <line 
+              x1={hipX} 
+              y1={hipY} 
+              x2={shoulderX} 
+              y2={shoulderY} 
               stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
               strokeWidth={viewMode === 'muscles' ? '12' : '10'} 
               strokeLinecap="round" 
             />
-            <circle cx={80 - curl * 0.5} cy={140 - curl} r="13" fill="#D4FF00" />
-            <line x1={95 - curl * 0.5} y1={150 - curl} x2={70 - curl * 0.5} y2={135 - curl} stroke="#00F0FF" strokeWidth="5" strokeLinecap="round" />
+            <circle cx={hipX} cy={hipY} r="7" fill="#1F2631" />
+            <circle cx={shoulderX} cy={shoulderY} r="7" fill="#1F2631" />
+
+            {/* HEAD */}
+            <circle cx={headX} cy={headY} r="13" fill="#D4FF00" />
+
+            {/* NEAR ARM Planted on Mat */}
+            <line x1={shoulderX} y1={shoulderY} x2="225" y2="200" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx="225" cy="200" r="4.5" fill="#00F0FF" />
+
+            {/* NEAR LEG (Raising In Synchrony) */}
+            <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke="#D4FF00" strokeWidth="10" strokeLinecap="round" />
+            <circle cx={kneeX} cy={kneeY} r="5" fill="#D4FF00" />
+            <line x1={kneeX} y1={kneeY} x2={footX} y2={footY} stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx={footX} cy={footY} r="5" fill="#00F0FF" />
+
             {viewMode === 'muscles' && (
-              <text x="140" y="130" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
-                RECTUS ABDOMINIS
+              <text x="120" y="100" fill="#D4FF00" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                LOWER RECTUS ABDOMINIS & PSOAS
               </text>
             )}
           </g>
         );
       }
 
-      case 'lunge': {
-        const dropY = cycle * 30;
+      case 'jumping-jack': {
+        const spread = cycle * 35;
+        const armAngle = cycle * 65;
+        const hipY = 135 - cycle * 8;
+        const shoulderY = 85 - cycle * 8;
         return (
           <g>
-            <line x1="60" y1="210" x2="340" y2="210" stroke="#1F2631" strokeWidth="3" strokeDasharray="6 4" />
-            <circle cx="200" cy={55 + dropY} r="13" fill="#D4FF00" />
-            <line x1="200" y1={70 + dropY} x2="200" y2={130 + dropY} stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
-            <line 
-              x1="200" 
-              y1={130 + dropY} 
-              x2="250" 
-              y2={145 + dropY * 0.4} 
-              stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
-              strokeWidth={viewMode === 'muscles' ? '11' : '9'} 
-              strokeLinecap="round" 
-            />
-            <line x1="250" y1={145 + dropY * 0.4} x2="250" y2="200" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
-            <line x1="200" y1={130 + dropY} x2="140" y2={175 + dropY * 0.7} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
-            <line x1="140" y1={175 + dropY * 0.7} x2="110" y2="200" stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
-            {viewMode === 'muscles' && (
-              <text x="170" y="110" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
-                GLUTE & QUAD CHAIN
-              </text>
-            )}
-          </g>
-        );
-      }
+            <line x1="50" y1="210" x2="350" y2="210" stroke="#1F2631" strokeWidth="3" strokeDasharray="6 4" />
+            
+            {/* HEAD */}
+            <circle cx="200" cy={shoulderY - 22} r="14" fill="#D4FF00" />
 
-      case 'jumping-jack':
-      case 'burpee': {
-        const legSpread = cycle * 35;
-        const armAngle = cycle * 60;
-        return (
-          <g>
-            <circle cx="200" cy="55" r="14" fill="#D4FF00" />
+            {/* TORSO */}
             <line 
               x1="200" 
-              y1="70" 
+              y1={shoulderY} 
               x2="200" 
-              y2="135" 
+              y2={hipY} 
               stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
               strokeWidth={viewMode === 'muscles' ? '12' : '10'} 
               strokeLinecap="round" 
             />
-            <line x1="200" y1="135" x2={180 - legSpread} y2="200" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
-            <line x1="200" y1="135" x2={220 + legSpread} y2="200" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
-            <line x1="200" y1="80" x2={150 - legSpread * 0.8} y2={120 - armAngle} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
-            <line x1="200" y1="80" x2={250 + legSpread * 0.8} y2={120 - armAngle} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx="200" cy={shoulderY} r="7" fill="#1F2631" />
+            <circle cx="200" cy={hipY} r="7" fill="#1F2631" />
+
+            {/* LEFT LEG */}
+            <line x1="200" y1={hipY} x2={180 - spread * 0.5} y2="175" stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx={180 - spread * 0.5} cy="175" r="5" fill="#D4FF00" />
+            <line x1={180 - spread * 0.5} y1="175" x2={165 - spread} y2="208" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={165 - spread} cy="208" r="5" fill="#00F0FF" />
+
+            {/* RIGHT LEG */}
+            <line x1="200" y1={hipY} x2={220 + spread * 0.5} y2="175" stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx={220 + spread * 0.5} cy="175" r="5" fill="#D4FF00" />
+            <line x1={220 + spread * 0.5} y1="175" x2={235 + spread} y2="208" stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={235 + spread} cy="208" r="5" fill="#00F0FF" />
+
+            {/* LEFT ARM */}
+            <line x1="200" y1={shoulderY} x2={160 - spread * 0.6} y2={110 - armAngle * 0.5} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={160 - spread * 0.6} cy={110 - armAngle * 0.5} r="4.5" fill="#00F0FF" />
+            <line x1={160 - spread * 0.6} y1={110 - armAngle * 0.5} x2={145 - spread * 0.8} y2={100 - armAngle} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={145 - spread * 0.8} cy={100 - armAngle} r="4.5" fill="#D4FF00" />
+
+            {/* RIGHT ARM */}
+            <line x1="200" y1={shoulderY} x2={240 + spread * 0.6} y2={110 - armAngle * 0.5} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={240 + spread * 0.6} cy={110 - armAngle * 0.5} r="4.5" fill="#00F0FF" />
+            <line x1={240 + spread * 0.6} y1={110 - armAngle * 0.5} x2={255 + spread * 0.8} y2={100 - armAngle} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={255 + spread * 0.8} cy={100 - armAngle} r="4.5" fill="#D4FF00" />
+
             {viewMode === 'muscles' && (
-              <text x="130" y="100" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
-                METABOLIC FULL BODY
+              <text x="130" y="55" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                CALVES, DELTOIDS & CARDIOVASCULAR
+              </text>
+            )}
+          </g>
+        );
+      }
+
+      case 'burpee': {
+        const p = (phase / (Math.PI * 2)) % 1;
+        let hipX = 200, hipY = 145, shoulderX = 200, shoulderY = 85;
+        let kneeX = 200, kneeY = 175, footX = 200, footY = 205;
+        let elbowX = 180, elbowY = 110, handX = 170, handY = 135;
+
+        if (p < 0.25) {
+          // Standing to squat drop
+          const t = p / 0.25;
+          hipY = 120 + t * 45;
+          shoulderY = 65 + t * 45;
+          kneeX = 215 + t * 15;
+          kneeY = 165;
+          handY = 115 + t * 85;
+        } else if (p < 0.5) {
+          // Plank kickout
+          hipX = 180; hipY = 155;
+          shoulderX = 275; shoulderY = 145;
+          kneeX = 140; kneeY = 175;
+          footX = 105; footY = 200;
+          elbowX = 275; elbowY = 172;
+          handX = 275; handY = 200;
+        } else if (p < 0.75) {
+          // Pushup on floor
+          const t = (p - 0.5) / 0.25;
+          const drop = Math.sin(t * Math.PI) * 20;
+          hipX = 180; hipY = 155 + drop * 0.6;
+          shoulderX = 275; shoulderY = 145 + drop;
+          kneeX = 140; kneeY = 175;
+          footX = 105; footY = 200;
+          elbowX = 290 + drop * 0.3; elbowY = 160 + drop * 0.4;
+          handX = 275; handY = 200;
+        } else {
+          // Jump up
+          const t = (p - 0.75) / 0.25;
+          const jump = Math.sin(t * Math.PI) * 40;
+          hipX = 200; hipY = 135 - jump;
+          shoulderX = 200; shoulderY = 80 - jump;
+          kneeX = 200; kneeY = 170 - jump;
+          footX = 200; footY = 205 - jump;
+          elbowX = 220; elbowY = 70 - jump;
+          handX = 225; handY = 50 - jump;
+        }
+
+        return (
+          <g>
+            <line x1="50" y1="205" x2="350" y2="205" stroke="#1F2631" strokeWidth="3" strokeDasharray="6 4" />
+
+            {/* FAR LEG */}
+            <line x1={hipX} y1={hipY} x2={kneeX - 6} y2={kneeY} stroke="#0284C7" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={kneeX - 6} cy={kneeY} r="4.5" fill="#0284C7" />
+            <line x1={kneeX - 6} y1={kneeY} x2={footX - 6} y2={footY} stroke="#0284C7" strokeWidth="7" strokeLinecap="round" />
+
+            {/* FAR ARM */}
+            <line x1={shoulderX} y1={shoulderY} x2={elbowX - 6} y2={elbowY} stroke="#0284C7" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={elbowX - 6} cy={elbowY} r="4" fill="#0284C7" />
+            <line x1={elbowX - 6} y1={elbowY} x2={handX - 6} y2={handY} stroke="#0284C7" strokeWidth="6" strokeLinecap="round" />
+
+            {/* TORSO */}
+            <line 
+              x1={hipX} 
+              y1={hipY} 
+              x2={shoulderX} 
+              y2={shoulderY} 
+              stroke={viewMode === 'muscles' ? '#00F0FF' : '#D4FF00'} 
+              strokeWidth={viewMode === 'muscles' ? '12' : '10'} 
+              strokeLinecap="round" 
+            />
+            <circle cx={hipX} cy={hipY} r="7" fill="#1F2631" />
+            <circle cx={shoulderX} cy={shoulderY} r="7" fill="#1F2631" />
+
+            {/* HEAD */}
+            <circle cx={shoulderX + (shoulderX > hipX ? 20 : 0)} cy={shoulderY - 18} r="13" fill="#D4FF00" />
+
+            {/* NEAR LEG */}
+            <line x1={hipX} y1={hipY} x2={kneeX} y2={kneeY} stroke="#D4FF00" strokeWidth="9" strokeLinecap="round" />
+            <circle cx={kneeX} cy={kneeY} r="5" fill="#D4FF00" />
+            <line x1={kneeX} y1={kneeY} x2={footX} y2={footY} stroke="#D4FF00" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={footX} cy={footY} r="5" fill="#00F0FF" />
+
+            {/* NEAR ARM */}
+            <line x1={shoulderX} y1={shoulderY} x2={elbowX} y2={elbowY} stroke="#00F0FF" strokeWidth="8" strokeLinecap="round" />
+            <circle cx={elbowX} cy={elbowY} r="4.5" fill="#D4FF00" />
+            <line x1={elbowX} y1={elbowY} x2={handX} y2={handY} stroke="#00F0FF" strokeWidth="7" strokeLinecap="round" />
+            <circle cx={handX} cy={handY} r="4.5" fill="#00F0FF" />
+
+            {viewMode === 'muscles' && (
+              <text x="120" y="45" fill="#00F0FF" fontSize="9" fontFamily="monospace" fontWeight="bold">
+                ANAEROBIC FULL-BODY EXPLOSION
               </text>
             )}
           </g>
