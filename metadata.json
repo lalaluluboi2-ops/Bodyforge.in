@@ -1,6 +1,6 @@
 {
   "name": "BODYFORGE",
-  "description": "Premium AI-powered calisthenics, wellness, and self-care platform for bodyweight strength, healthy mobility, and holistic wellness at home.",
+  "description": "Bodyforge is your online fitness companion. Explore workout routines, exercise guides, body maintenance tips and an AI-powered fitness assistant.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
