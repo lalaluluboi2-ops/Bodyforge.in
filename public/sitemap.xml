@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!-- Homepage & Core Calisthenics Dashboard -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Complete Calisthenics Workout Library & 3D Vector Engine -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=library</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Holistic Wellness Hub, Sleep Protocols & Longevity -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=wellness</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Metabolic Nutrition & High-Protein Meal Architecture -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=nutrition</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Periodized Seasonal Training Programs -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=seasonal</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Facial Fitness, Postural Jawline Alignment & Skin Vitality -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=facial</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Joint Pain Relief & Functional Mobility Protocols -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?view=pain-library</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Athlete Training Progress & Habit Tracker -->
+  <url>
+    <loc>https://bodyforge-in.lalaluluboi2.workers.dev/?tab=progress</loc>
+    <lastmod>2026-10-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

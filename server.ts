@@ -46,6 +46,18 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+// Explicit sitemap.xml endpoint for SEO crawlers and Cloudflare Workers proxy
+app.get('/sitemap.xml', (_req, res) => {
+  res.header('Content-Type', 'application/xml');
+  res.sendFile(path.resolve(__dirname, 'public', 'sitemap.xml'));
+});
+
+// Explicit robots.txt endpoint for search crawlers
+app.get('/robots.txt', (_req, res) => {
+  res.header('Content-Type', 'text/plain');
+  res.sendFile(path.resolve(__dirname, 'public', 'robots.txt'));
+});
+
 // Build system instruction for BodyBuddy AI
 function buildSystemInstruction(language: string, userContext?: { experience?: string; goal?: string; streak?: number }): string {
   return `You are BodyBuddy AI, an exceptionally warm, friendly, encouraging, empathetic, and caring fitness, nutrition, and wellness companion for BODYFORGE.

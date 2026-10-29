@@ -44,13 +44,28 @@ import { motion, AnimatePresence } from 'motion/react';
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [currentTab, setCurrentTab] = useState<string>('dashboard');
+  const [currentTab, setCurrentTab] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam && ['dashboard', 'library', 'nutrition', 'wellness', 'seasonal', 'facial', 'progress'].includes(tabParam)) {
+        return tabParam;
+      }
+    }
+    return 'dashboard';
+  });
   
   // Active deep views
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
   const [isPlayingWorkout, setIsPlayingWorkout] = useState<Workout | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<WellnessArticle | null>(null);
-  const [isViewingPainLibrary, setIsViewingPainLibrary] = useState<boolean>(false);
+  const [isViewingPainLibrary, setIsViewingPainLibrary] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('view') === 'pain-library';
+    }
+    return false;
+  });
   
   // Modals and Alerts
   const [showConfigModal, setShowConfigModal] = useState<boolean>(false);
@@ -241,6 +256,27 @@ export const App: React.FC = () => {
     setSelectedArticle(null);
     setIsViewingPainLibrary(false);
     setCurrentTab(tab);
+    if (typeof window !== 'undefined' && window.history) {
+      const newUrl = tab === 'dashboard' ? window.location.pathname : `${window.location.pathname}?tab=${tab}`;
+      window.history.replaceState(null, '', newUrl);
+    }
+  };
+
+  const handleOpenPainLibrary = () => {
+    setSelectedWorkout(null);
+    setSelectedArticle(null);
+    setIsViewingPainLibrary(true);
+    if (typeof window !== 'undefined' && window.history) {
+      window.history.replaceState(null, '', `${window.location.pathname}?view=pain-library`);
+    }
+  };
+
+  const handleClosePainLibrary = () => {
+    setIsViewingPainLibrary(false);
+    if (typeof window !== 'undefined' && window.history) {
+      const newUrl = currentTab === 'dashboard' ? window.location.pathname : `${window.location.pathname}?tab=${currentTab}`;
+      window.history.replaceState(null, '', newUrl);
+    }
   };
 
   if (isLoading) {
@@ -385,7 +421,7 @@ export const App: React.FC = () => {
               className="min-h-screen bg-charcoal-950"
             >
               <PainMobilityView
-                onBack={() => setIsViewingPainLibrary(false)}
+                onBack={handleClosePainLibrary}
               />
             </motion.div>
           ) : (
@@ -406,7 +442,7 @@ export const App: React.FC = () => {
                   onOpenLibrary={() => setCurrentTab('library')}
                   onOpenWellness={() => setCurrentTab('wellness')}
                   onSelectArticle={(a) => setSelectedArticle(a)}
-                  onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+                  onOpenPainLibrary={handleOpenPainLibrary}
                 />
               )}
 
@@ -424,7 +460,7 @@ export const App: React.FC = () => {
               {currentTab === 'wellness' && (
                 <WellnessHubView
                   onSelectArticle={(a) => setSelectedArticle(a)}
-                  onOpenPainLibrary={() => setIsViewingPainLibrary(true)}
+                  onOpenPainLibrary={handleOpenPainLibrary}
                 />
               )}
 
