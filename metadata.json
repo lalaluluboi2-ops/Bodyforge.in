@@ -1,6 +1,6 @@
 {
   "name": "BODYFORGE",
-  "description": "Bodyforge is your online fitness companion. Explore workout routines, exercise guides, body maintenance tips and an AI-powered fitness assistant.",
+  "description": "Transform your physique with Bodyforge. Get expert body fitness training plans, workout routines, and proven strategies to build rock-hard six-pack abs.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
