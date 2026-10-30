@@ -79,8 +79,12 @@ export const Navigation: React.FC<NavigationProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
         >
-          <div className="w-9 h-9 rounded-xl bg-forge-lime flex items-center justify-center text-black font-black text-xl shadow-forge-glow transition-transform duration-300 group-hover:rotate-3">
-            B
+          <div className="w-10 h-10 rounded-xl bg-charcoal-900 border border-charcoal-800 flex items-center justify-center p-0.5 shadow-forge-glow transition-transform duration-300 group-hover:scale-105">
+            <img 
+              src="/logo.png" 
+              alt="Bodyforge Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <span className="text-xl font-black text-white tracking-tight">
             BODY<span className="text-forge-lime">FORGE</span>

@@ -84,8 +84,12 @@ export const AuthGate: React.FC<AuthGateProps> = ({
       <div className="w-full max-w-md bg-charcoal-900/90 border border-charcoal-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative z-10 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-forge-lime text-black font-black text-2xl shadow-forge-glow mb-1">
-            B
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-charcoal-950 border border-charcoal-800 p-2 shadow-forge-glow mb-1">
+            <img 
+              src="/logo.png" 
+              alt="Bodyforge Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
